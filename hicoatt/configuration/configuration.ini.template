@@ -1,0 +1,107 @@
+[MODEL]
+PrintModelSummary = False
+
+# Which model to run: hicoatt or baseline (default: baseline)
+ModelType = hicoatt
+ModelDerivateName = fixatt
+
+# Percentage (between 0 and 1) of randomly selected network activations to be discarded
+# This is applied after each layer
+DropoutRate = 0.5
+
+# The number of answers (as classes) to predict (default: 1000)
+# Also necessary for preparation when creating the labels file
+# When using train this will cover 84,69% of answers and 86.72% of questions on VQA1
+# When using train+val this will cover 84,43% of answers and 86.53% of questions on VQA1
+NumClasses = 1000
+
+# The maximal length of the questions (default : 23
+# This value is probably dataset related and can be determined with the prepare training script
+# For VQA 1.0: train=22, validate=23, test=22
+QuestionMaximalLength = 23
+
+# The vocabulary size is necessary to create the correct word embeddings for the questions
+# This value is probably dataset related and can be determined with the prepare training script
+# For only training
+#VocabularySize = 12514
+VocabularySize = 14641
+
+# The expected image input shape. The image get resized to this shape.
+ImageInputShape = (224, 224, 3)
+#ImageInputShape = (448, 448, 3)
+
+# The feature-map size of the visual features of the image feature extractor
+# This value must be specified along with the ImageInputShape
+# For example the feature-maps on 448 x 448 images are 14 x 14 = 196
+# For example the feature-maps on 224 x 224 images are 7 x 7 = 49
+ImageFeaturesSize = 49
+#ImageFeaturesSize = 196
+
+# Bypass the image input shape and expect image features as the input
+# This is useful when using the same set of images repeately (default: False)
+# The image feature maps are computed once and then served during use
+ByPassImageFeaturesComputation = True
+
+# Add a layer on top of the image features outputs
+ImageTopLayer = True
+
+[TRAINING]
+# Determine which GPU to use. The default GPU is 0. For CPU only specify -1.
+GpuDevices = 0
+
+# The directory where the metrics will be written as tensorboard logs
+TensorboardLoggingDirectory = C:/Development/apps/eclipse-java-2018-12/tensorboard/logs
+
+# The number of epochs (default: 256)
+Epochs = 256
+
+# The batch size (default: 256)
+BatchSize = 300
+
+# If True, use process-based threading (default: False)
+# Does not work well with Keras because out-of-memory problems are likely
+# on Windows. Better use False and increase the number of worker
+UseMultiProcessing = False
+
+# Maximum number of processes to spin up when using process-based threading (default: 1)
+# This also works without multi-processsing, but only with Sequences as generators
+Workers = 10
+
+# Maximal queues for training input generators (default: 10)
+MaxQueueSize = 10
+
+[DATASETS]
+# The directory with the questions json file and the prepared vocabulary and labels file. 
+# The dataset directory is supposed to contain dataset splits of train and validate 
+# in sub directories with the following names: <dir_path>/train and <dir_path>/validate
+TextualDatasetDirectoryPath = F:/Development/data/vqa1
+
+# Build the vocabulary from both questions and answers
+VocabularyIncludeAnswers = False
+
+# The corpus to us: either "OpenEnded" or "MultipleChoice" (default: MultipleChoice)
+TextualPreparationCorpus = MultipleChoice
+
+# Whether to use nltk as a tokenizer or the keras one (default: True)
+# When true, then nltk must be installed and prepared by executing once
+# python -c "import nltk; nltk.download('punkt')"
+PreparationUsingNltkTokenizer = True
+
+# The directory with the image files identifiable by the image_id in the questions json file.
+# The dataset directory is supposed to contain dataset splits of train and validate 
+# in sub directories with the following names: <dir_path>/train and <dir_path>/validate
+ImageDatasetDirectoryPath = C:/Development/data/mscoco
+
+# The MSCOCO image name infixes e.g. COCO_<infix>_<imageid>
+# Necessary to provide the inputs for training, validation and test
+TrainingImageNameInfix = train2014
+ValidationImageNameInfix = val2014
+TestImageNameInfix = test2015
+
+# Useful to show a progress bar on preparation
+NumberOfTrainingImages = 82783
+NumberOfValidationImages = 40504
+NumberOfTestImages = 81434
+
+# The batch size to use for preparation tasks, when not given as a run option
+PreparationBatchSize = 100

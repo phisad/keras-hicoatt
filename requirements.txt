@@ -1,0 +1,5 @@
+hicoatt
+tensorflow-gpu=1.13.1
+python=3.6
+pillow=5.4.1
+numpy
